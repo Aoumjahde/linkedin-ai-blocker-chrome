@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn AI Detector",
+  "version": "1.0.0",
+  "description": "Detects AI-generated content in LinkedIn posts and comments using Ollama",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "background"
+  ],
+  "host_permissions": [
+    "https://*.linkedin.com/*",
+    "http://localhost:11434/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.linkedin.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LinkedIn AI Detector"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

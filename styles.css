@@ -1,0 +1,260 @@
+/* LinkedIn AI Detector Styles */
+
+.ai-detector-flag {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 4px 8px 4px 0;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  animation: flagAppear 0.3s ease-out;
+  cursor: help;
+  z-index: 1000;
+  position: relative;
+}
+
+.ai-detector-flag.human-flag {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
+}
+
+.ai-flag-icon {
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.ai-flag-text {
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ai-detector-toggle-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+  margin: 8px;
+  z-index: 10000;
+  position: relative;
+}
+
+.ai-detector-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.ai-detector-toggle-btn:active {
+  transform: translateY(0);
+}
+
+.ai-detector-toggle-btn.disabled {
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.ai-detector-toggle-btn.disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+@keyframes flagAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Ensure flags don't interfere with LinkedIn's layout */
+.ai-detector-flag {
+  max-width: fit-content;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ai-detector-flag {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  
+  .ai-flag-text {
+    display: none;
+  }
+  
+  .ai-detector-toggle-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Hover effects for flags */
+.ai-detector-flag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+/* Ensure proper positioning in LinkedIn's feed */
+.feed-shared-update-v2 .ai-detector-flag,
+.feed-shared-text .ai-detector-flag,
+.comments-comment-item .ai-detector-flag {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1001;
+}
+
+/* Make sure the parent containers have relative positioning */
+.feed-shared-update-v2,
+.feed-shared-text,
+.comments-comment-item {
+  position: relative;
+}
+
+/* Ensure AI posts can be properly blurred and overlaid */
+.feed-shared-update-v2.ai-post-blurred,
+.feed-shared-text.ai-post-blurred,
+.comments-comment-item.ai-post-blurred {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Test connection button styles */
+.test-connection-btn {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.test-connection-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+}
+
+.test-connection-btn:active {
+  transform: translateY(0);
+}
+
+/* AI Detection Overlay Styles */
+.ai-detector-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 107, 107, 0.1);
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  backdrop-filter: blur(2px);
+}
+
+.ai-overlay-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+}
+
+.ai-overlay-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ai-overlay-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ff6b6b;
+  display: block;
+  margin-bottom: 15px;
+}
+
+
+
+/* Blur effect for AI posts */
+.ai-post-blurred {
+  filter: blur(3px);
+  transition: filter 0.3s ease;
+}
+
+/* Show Original Button Styles */
+.ai-show-original-btn {
+  background: #ff6b35;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: block;
+  width: fit-content;
+}
+
+.ai-show-original-btn:hover {
+  background: #e55a2b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ai-show-original-btn:active {
+  transform: translateY(0);
+}
+
+/* Hide Original Button Styles */
+.ai-hide-original-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: block;
+  width: fit-content;
+}
+
+.ai-hide-original-btn:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ai-hide-original-btn:active {
+  transform: translateY(0);
+}

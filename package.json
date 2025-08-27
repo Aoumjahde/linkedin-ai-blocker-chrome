@@ -1,0 +1,30 @@
+{
+  "name": "linkedin-ai-detector",
+  "version": "1.0.0",
+  "description": "Chrome extension that detects AI-generated content in LinkedIn posts using Ollama",
+  "main": "content.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"No build process needed for Chrome extension\"",
+    "install": "chmod +x install.sh && ./install.sh"
+  },
+  "keywords": [
+    "chrome-extension",
+    "linkedin",
+    "ai-detection",
+    "ollama",
+    "content-analysis"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/linkedin-ai-detector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/linkedin-ai-detector/issues"
+  },
+  "homepage": "https://github.com/yourusername/linkedin-ai-detector#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}

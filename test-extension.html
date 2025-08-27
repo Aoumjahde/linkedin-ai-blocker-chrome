@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LinkedIn AI Detector - Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-post {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            position: relative;
+        }
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 LinkedIn AI Detector - Test Page</h1>
+    
+    <div class="test-container">
+        <h2>Extension Status</h2>
+        <div id="extension-status" class="status info">Checking extension status...</div>
+        <button class="test-button" onclick="checkExtensionStatus()">Check Status</button>
+    </div>
+
+        <div class="test-container">
+      <h2>Test Posts</h2>
+      <p>These are sample posts to test AI detection. The extension should analyze them and add AI flags if detected.</p>
+      
+      <div class="test-post" data-test="human">
+        <h3>Human Post</h3>
+        <p>I'm excited to share that I've been promoted to Senior Software Engineer! This journey has been incredible, and I'm grateful for the amazing team that has supported me along the way. Looking forward to new challenges and opportunities ahead! 🚀 #CareerGrowth #SoftwareEngineering</p>
+      </div>
+
+      <div class="test-post" data-test="ai" style="position: relative;">
+        <h3>AI-Generated Post (Strict Detection)</h3>
+        <p>🚀 Thrilled to announce that I have been promoted to Senior Software Engineer! 🎉 This represents a significant milestone in my professional journey. 🙏 Grateful for the incredible team that has supported me throughout this process. 💪 Excited to embrace new challenges and leverage emerging opportunities! #CareerGrowth #ProfessionalDevelopment #SoftwareEngineering #Innovation #Leadership</p>
+      </div>
+
+      <div class="test-post" data-test="mixed">
+        <h3>Mixed Content</h3>
+        <p>Just finished an amazing project with my team! We built a real-time collaboration tool that's going to revolutionize how we work together. The late nights were worth it - seeing everyone's faces light up during the demo was priceless. Can't wait to see what we tackle next! 💪 #TeamWork #Innovation #TechLife</p>
+      </div>
+
+      <div class="test-post" data-test="ai-buzzwords" style="position: relative;">
+        <h3>AI Post (Corporate Buzzwords)</h3>
+        <p>Excited to leverage our strategic partnership to optimize synergies and disrupt the paradigm! 🚀 Our holistic approach enables scalable solutions that create robust value propositions. Looking forward to transforming the ecosystem through innovative best practices! #Innovation #Synergy #Optimization #Disruption</p>
+      </div>
+
+      <div class="test-post" data-test="ai-perfect" style="position: relative;">
+        <h3>AI Post (Perfect Formatting)</h3>
+        <p>Delighted to announce our latest breakthrough! 🎯✨🌟 This cutting-edge innovation represents a game-changing paradigm shift in our industry. We're thrilled to leverage strategic synergies and optimize our core competencies! #Innovation #Breakthrough #ParadigmShift #GameChanger #StrategicSynergy</p>
+      </div>
+    </div>
+
+    <div class="test-container">
+      <h2>Demo Effects</h2>
+      <p>Click the buttons below to see the blur effect and flags in action:</p>
+      
+              <button class="test-button" onclick="demoBlurEffect()">Demo AI Blur Effect</button>
+        <button class="test-button" onclick="demoHumanFlag()">Demo Human Flag</button>
+        <button class="test-button" onclick="demoShowOriginalButton()">Demo Show Original Button</button>
+        <button class="test-button" onclick="testStrictDetection()">Test Strict Detection</button>
+        <button class="test-button" onclick="resetDemo()">Reset Demo</button>
+      
+      <div id="demo-results" style="margin-top: 15px;"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Manual Testing</h2>
+        <button class="test-button" onclick="testGeminiConnection()">Test Gemini Connection</button>
+        <button class="test-button" onclick="testAIDetection()">Test AI Detection</button>
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        // Check if extension is loaded
+        function checkExtensionStatus() {
+            const statusDiv = document.getElementById('extension-status');
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ Extension is loaded and running!';
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Extension not detected. Make sure it\'s installed and enabled.';
+            }
+        }
+
+        // Test Gemini connection
+        function testGeminiConnection() {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = '<div class="status info">Testing Gemini connection...</div>';
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                // Get API key from extension settings
+                chrome.storage.sync.get(['geminiApiKey'], (items) => {
+                    if (!items.geminiApiKey || items.geminiApiKey.trim() === '') {
+                        resultsDiv.innerHTML = '<div class="status error">❌ Please configure your Gemini API key in the extension settings first</div>';
+                        return;
+                    }
+                    
+                    chrome.runtime.sendMessage({
+                        action: 'testGeminiConnection',
+                        data: {
+                            apiKey: items.geminiApiKey,
+                            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+                        }
+                    }, (response) => {
+                        if (response && response.success) {
+                            resultsDiv.innerHTML = '<div class="status success">✅ ' + response.message + '</div>';
+                        } else {
+                            resultsDiv.innerHTML = '<div class="status error">❌ ' + (response?.error || 'Connection failed') + '</div>';
+                        }
+                    });
+                });
+            } else {
+                resultsDiv.innerHTML = '<div class="status error">❌ Extension not available</div>';
+            }
+        }
+
+        // Test AI detection
+        function testAIDetection() {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = '<div class="status info">Testing AI detection...</div>';
+            
+            const testText = "I am pleased to announce that I have been promoted to the position of Senior Software Engineer. This achievement represents a significant milestone in my professional development journey.";
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                // Get API key from extension settings
+                chrome.storage.sync.get(['geminiApiKey'], (items) => {
+                    if (!items.geminiApiKey || items.geminiApiKey.trim() === '') {
+                        resultsDiv.innerHTML = '<div class="status error">❌ Please configure your Gemini API key in the extension settings first</div>';
+                        return;
+                    }
+                    
+                    chrome.runtime.sendMessage({
+                        action: 'callGemini',
+                        data: {
+                            apiKey: items.geminiApiKey,
+                            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+                            prompt: `Analyze the following text and determine if it was likely generated by AI. Consider factors like repetitive patterns, generic language, unusual formatting, overly perfect grammar, lack of personal anecdotes, and corporate buzzword usage. Text: "${testText}" Respond with only "AI" if the text appears AI-generated, or "HUMAN" if it appears human-written.`
+                        }
+                    }, (response) => {
+                        if (response && response.success) {
+                            const result = response.data.candidates[0].content.parts[0].text.toLowerCase() || '';
+                            const isAI = result.includes('ai');
+                            resultsDiv.innerHTML = `<div class="status success">✅ AI Detection Test: ${isAI ? '🤖 AI Detected' : '👤 Human Written'}<br>Response: "${response.data.candidates[0].content.parts[0].text}"</div>`;
+                        } else {
+                            resultsDiv.innerHTML = '<div class="status error">❌ AI Detection failed: ' + (response?.error || 'Unknown error') + '</div>';
+                        }
+                    });
+                });
+            } else {
+                resultsDiv.innerHTML = '<div class="status error">❌ Extension not available</div>';
+            }
+        }
+
+        // Demo functions
+        function demoBlurEffect() {
+            const aiPost = document.querySelector('[data-test="ai"]');
+            if (aiPost) {
+                aiPost.classList.add('ai-post-blurred');
+                aiPost.style.filter = 'blur(3px)';
+                aiPost.style.transition = 'filter 0.3s ease';
+                
+                // Create AI warning overlay
+                const aiOverlay = document.createElement('div');
+                aiOverlay.className = 'ai-detector-overlay';
+                aiOverlay.innerHTML = `
+                    <div class="ai-overlay-content">
+                        <span class="ai-overlay-icon">🤖</span>
+                        <span class="ai-overlay-text">AI Generated Content</span>
+                        <button class="ai-overlay-toggle" onclick="resetDemo()">Show Content</button>
+                    </div>
+                `;
+                
+                aiPost.appendChild(aiOverlay);
+                
+                document.getElementById('demo-results').innerHTML = '<div class="status success">✅ AI blur effect applied! The post is now blurred with a warning overlay.</div>';
+            }
+        }
+
+        function demoHumanFlag() {
+            const humanPost = document.querySelector('[data-test="human"]');
+            if (humanPost) {
+                // Remove existing flag if present
+                const existingFlag = humanPost.querySelector('.ai-detector-flag');
+                if (existingFlag) {
+                    existingFlag.remove();
+                }
+                
+                // Add green flag for human content
+                const flag = document.createElement('div');
+                flag.className = 'ai-detector-flag human-flag';
+                flag.innerHTML = `
+                    <span class="ai-flag-icon">👤</span>
+                    <span class="ai-flag-text">Human Written</span>
+                `;
+                flag.title = 'This content appears to be written by a human';
+                
+                humanPost.insertBefore(flag, humanPost.firstChild);
+                
+                document.getElementById('demo-results').innerHTML = '<div class="status success">✅ Green human flag added! This indicates human-written content.</div>';
+            }
+        }
+
+        function demoShowOriginalButton() {
+            const aiPost = document.querySelector('[data-test="ai"]');
+            if (aiPost) {
+                // Add blur effect
+                aiPost.classList.add('ai-post-blurred');
+                aiPost.style.filter = 'blur(3px)';
+                aiPost.style.transition = 'filter 0.3s ease';
+                
+                // Create AI warning overlay (without button)
+                const aiOverlay = document.createElement('div');
+                aiOverlay.className = 'ai-detector-overlay';
+                aiOverlay.innerHTML = `
+                    <div class="ai-overlay-content">
+                        <span class="ai-overlay-text">AI Generated Content</span>
+                    </div>
+                `;
+                
+                aiPost.style.position = 'relative';
+                aiPost.appendChild(aiOverlay);
+                
+                // Add "Show Original" button above the blur
+                const showOriginalBtn = document.createElement('button');
+                showOriginalBtn.className = 'ai-show-original-btn';
+                showOriginalBtn.innerHTML = '👁️ Show Original';
+                showOriginalBtn.title = 'Click to temporarily view the original content';
+                
+                showOriginalBtn.onclick = function() {
+                    // Store original styles to restore later
+                    const originalFilter = aiPost.style.filter;
+                    const originalTransition = aiPost.style.transition;
+                    const originalPosition = aiPost.style.position;
+                    
+                    // Completely remove all filters and show original content
+                    aiPost.style.filter = 'none';
+                    aiPost.style.transition = 'none';
+                    aiPost.classList.remove('ai-post-blurred');
+                    
+                    // Hide the overlay to show clean original content
+                    const overlay = aiPost.querySelector('.ai-detector-overlay');
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                    
+                    // Hide the show original button
+                    showOriginalBtn.style.display = 'none';
+                    
+                    // Create hide original button
+                    const hideOriginalBtn = document.createElement('button');
+                    hideOriginalBtn.style.display = 'block';
+                    hideOriginalBtn.className = 'ai-hide-original-btn';
+                    hideOriginalBtn.title = 'Click to restore the blur effect';
+                    hideOriginalBtn.innerHTML = '🙈 Hide Original';
+                    
+                    hideOriginalBtn.onclick = function() {
+                        // Restore all original styles and blur
+                        aiPost.style.filter = 'blur(3px)';
+                        aiPost.style.transition = 'filter 0.3s ease';
+                        aiPost.style.position = 'relative';
+                        aiPost.classList.add('ai-post-blurred');
+                        
+                        // Show the overlay again
+                        if (overlay) {
+                            overlay.style.display = 'flex';
+                        }
+                        
+                        // Remove hide button and restore show button
+                        hideOriginalBtn.remove();
+                        showOriginalBtn.style.display = 'block';
+                    };
+                    
+                    // Insert hide button after show button
+                    showOriginalBtn.parentNode.insertBefore(hideOriginalBtn, showOriginalBtn.nextSibling);
+                };
+                
+                // Insert the show original button before the element
+                aiPost.parentNode.insertBefore(showOriginalBtn, aiPost);
+                
+                document.getElementById('demo-results').innerHTML = '<div class="status success">✅ Show Original button demo created! Click the orange "👁️ Show Original" button above the blurred post to see the original content.</div>';
+            } else {
+                document.getElementById('demo-results').innerHTML = '<div class="status error">❌ AI post not found for demo.</div>';
+            }
+        }
+
+        function resetDemo() {
+            const aiPost = document.querySelector('[data-test="ai"]');
+            if (aiPost) {
+                aiPost.classList.remove('ai-post-blurred');
+                aiPost.style.filter = 'none';
+                
+                const overlay = aiPost.querySelector('.ai-detector-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+            }
+            
+            const humanPost = document.querySelector('[data-test="human"]');
+            if (humanPost) {
+                const flag = humanPost.querySelector('.ai-detector-flag');
+                if (flag) {
+                    flag.remove();
+                }
+            }
+            
+            // Reset all AI posts
+            const allAiPosts = document.querySelectorAll('[data-test*="ai"]');
+            allAiPosts.forEach(post => {
+                post.classList.remove('ai-post-blurred');
+                post.style.filter = 'none';
+                const overlay = post.querySelector('.ai-detector-overlay');
+                if (overlay) overlay.remove();
+            });
+            
+            // Remove all Show Original and Hide Original buttons
+            const showOriginalBtns = document.querySelectorAll('.ai-show-original-btn');
+            showOriginalBtns.forEach(btn => btn.remove());
+            
+            const hideOriginalBtns = document.querySelectorAll('.ai-hide-original-btn');
+            hideOriginalBtns.forEach(btn => btn.remove());
+            
+            document.getElementById('demo-results').innerHTML = '<div class="status info">🔄 Demo reset! All effects have been removed.</div>';
+        }
+
+        function testStrictDetection() {
+            const resultsDiv = document.getElementById('demo-results');
+            resultsDiv.innerHTML = '<div class="status info">Testing strict AI detection...</div>';
+            
+            // Test the strict detection logic
+            const testTexts = [
+                {
+                    text: "🚀 Thrilled to announce that I have been promoted to Senior Software Engineer! 🎉 This represents a significant milestone in my professional journey. 🙏 Grateful for the incredible team that has supported me throughout this process. 💪 Excited to embrace new challenges and leverage emerging opportunities! #CareerGrowth #ProfessionalDevelopment #SoftwareEngineering #Innovation #Leadership",
+                    expected: "AI (excessive emojis + buzzwords)"
+                },
+                {
+                    text: "Excited to leverage our strategic partnership to optimize synergies and disrupt the paradigm! 🚀 Our holistic approach enables scalable solutions that create robust value propositions. Looking forward to transforming the ecosystem through innovative best practices! #Innovation #Synergy #Optimization #Disruption",
+                    expected: "AI (corporate buzzwords)"
+                },
+                {
+                    text: "Just finished an amazing project with my team! We built a real-time collaboration tool that's going to revolutionize how we work together. The late nights were worth it - seeing everyone's faces light up during the demo was priceless. Can't wait to see what we tackle next! 💪 #TeamWork #Innovation #TechLife",
+                    expected: "HUMAN (personal details + casual tone)"
+                }
+            ];
+            
+            let results = '<div class="status success">🧪 Strict Detection Test Results:</div><br>';
+            
+            testTexts.forEach((test, index) => {
+                const emojiCount = (test.text.match(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu) || []).length;
+                const hasBuzzwords = ['synergy', 'leverage', 'optimize', 'paradigm', 'ecosystem', 'holistic', 'scalable', 'robust'].some(word => test.text.toLowerCase().includes(word));
+                const hasPersonalDetails = /\b(?:my|mine|I've|I'm|I'll)\b/i.test(test.text) || /\b(?:yesterday|today|last week)\b/i.test(test.text);
+                
+                let detection = 'HUMAN';
+                if (emojiCount > 4 || hasBuzzwords) {
+                    detection = 'AI';
+                } else if (hasPersonalDetails) {
+                    detection = 'HUMAN';
+                }
+                
+                results += `<div style="margin: 5px 0; padding: 5px; background: ${detection === 'AI' ? '#ffe6e6' : '#e6ffe6'}; border-radius: 4px;">
+                    <strong>Test ${index + 1}:</strong> ${detection === 'AI' ? '🤖 AI Detected' : '👤 Human Detected'}<br>
+                    <small>Expected: ${test.expected}</small><br>
+                    <small>Emojis: ${emojiCount}, Buzzwords: ${hasBuzzwords ? 'Yes' : 'No'}, Personal: ${hasPersonalDetails ? 'Yes' : 'No'}</small>
+                </div>`;
+            });
+            
+            resultsDiv.innerHTML = results;
+        }
+
+        // Auto-check extension status on page load
+        window.onload = function() {
+            setTimeout(checkExtensionStatus, 1000);
+        };
+    </script>
+</body>
+</html>
