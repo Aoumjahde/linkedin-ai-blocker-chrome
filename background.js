@@ -18,7 +18,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 });
 
 // Handle messages from content scripts
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sendResponse) => {
   if (message.action === 'log') {
     console.log('LinkedIn AI Detector:', message.data);
   } else if (message.action === 'callGemini') {
