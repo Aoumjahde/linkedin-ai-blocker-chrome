@@ -111,12 +111,33 @@ class LinkedInAIDetector {
   }
 
   hasExcessiveBuzzwords(text) {
-    const buzzwords = [
-      'synergy', 'leverage', 'optimize', 'streamline', 'paradigm', 'ecosystem',
-      'disrupt', 'innovate', 'transform', 'strategic', 'holistic', 'scalable',
-      'robust', 'seamless', 'cutting-edge', 'game-changer', 'thought leader',
-      'best practices', 'core competencies', 'value proposition'
-    ];
+  const buzzwords = [
+    'artificial intelligence (ai)', 'machine learning (ml)', 'deep learning', 'neural network',
+    'large language model (llm)', 'generative ai', 'transformer architecture', 'model parameters',
+    'training data', 'inference', 'pre-training', 'fine-tuning', 'tokenization',
+    'context window', 'hallucinations', 'prompt engineering', 'zero-shot learning',
+    'few-shot learning', 'embeddings', 'vector database', 'mixture of experts (moe)',
+    'reinforcement learning from human feedback (rlhf)', 'chain-of-thought (cot)',
+    'retrieval-augmented generation (rag)', 'transfer learning', 'self-attention',
+    'knowledge graph', 'hyperparameters', 'scalability', 'efficiency',
+    'multimodality', 'agentic ai', 'autonomous agents', 'real-time processing',
+    'low-latency', 'high-throughput', 'data synthesis', 'code generation',
+    'code debugging', 'summarization', 'content creation', 'chatbot',
+    'virtual assistant', 'sentiment analysis', 'named entity recognition (ner)',
+    'conversational ai', 'personalization', 'enterprise integration',
+    'domain-specific llm', 'decision-making', 'digital transformation',
+    'innovation hub', 'disruption', 'ecosystem', 'synergy', 'value proposition',
+    'paradigm shift', 'vertical integration', 'monetization', 'roi (return on investment)',
+    'stakeholders', 'seamless integration', 'optimized workflow', 'scalable solution',
+    'end-to-end', 'robust', 'agile', 'user-centric', 'game-changer', 'cutting-edge',
+    'bias mitigation', 'ai alignment', 'transparency', 'explainability (xai)',
+    'ethical ai', 'responsible ai', 'data privacy', 'algorithmic fairness',
+    'security risks', 'accountability', 'revolutionary', 'transformative',
+    'unprecedented', 'holistic', 'dynamic', 'empowering', 'future-proof',
+    'on-the-fly', 'in-the-wild', 'leveraging', 'driving', 'pioneering',
+    'ushering in', 'at the forefront', 'quantum computing', 'the internet of things (iot)',
+    'smart technology', 'predictive analytics', 'big data', 'cloud-based'
+  ];
     
     const foundBuzzwords = buzzwords.filter(word => text.includes(word));
     return foundBuzzwords.length >= 2; // 2 or more buzzwords = likely AI
@@ -130,12 +151,42 @@ class LinkedInAIDetector {
   }
 
   hasGenericMotivationalLanguage(text) {
-    const motivationalPhrases = [
-      'excited to share', 'thrilled to announce', 'proud to announce',
-      'honored to share', 'delighted to announce', 'grateful for the opportunity',
-      'looking forward to', 'can\'t wait to', 'amazing journey',
-      'incredible team', 'fantastic opportunity', 'wonderful experience'
-    ];
+  const motivationalPhrases = [
+    'embrace the journey', 'unlock your full potential', 'the only limit is your imagination',
+    'believe in yourself', 'you\'ve got this!', 'keep moving forward', 'every challenge is an opportunity',
+    'your potential is limitless', 'start with a single step', 'the future is bright',
+    'focus on the positive', 'stay resilient', 'you are capable of great things',
+    'don\'t be afraid to fail', 'progress, not perfection', 'find your inner strength',
+    'make every day count', 'your journey is unique', 'rise to the occasion',
+    'create your own destiny', 'be the change you wish to see', 'inspire others',
+    'the world is waiting for you', 'step out of your comfort zone', 'find your passion',
+    'stay focused on your goals', 'visualize your success', 'hard work pays off',
+    'dream big', 'never give up', 'your voice matters', 'the best is yet to come',
+    'challenge yourself', 'find joy in the small things', 'be kind to yourself',
+    'your efforts will be rewarded', 'find your purpose', 'take a leap of faith',
+    'the possibilities are endless', 'a fresh start awaits', 'find the silver lining',
+    'be bold and brave', 'you are the master of your fate', 'turn obstacles into stepping stones',
+    'learn from yesterday, live for today', 'your courage is your strength',
+    'stay true to yourself', 'let your dreams be your guide', 'celebrate your progress',
+    'radiate positivity', 'your inner light shines bright', 'overcome and conquer',
+    'take it one day at a time', 'you are stronger than you think', 'the sky is the limit',
+    'follow your heart', 'let your creativity flow', 'find your happy place',
+    'stay curious', 'the world is your canvas', 'your journey is just beginning',
+    'you can achieve anything', 'don\'t let fear hold you back', 'every moment is a new beginning',
+    'seize the day', 'your potential is waiting to be realized', 'trust the process',
+    'find your inner peace', 'be your own hero', 'live life to the fullest',
+    'dare to be different', 'your success story starts now', 'find strength in vulnerability',
+    'the journey is the reward', 'be the best version of yourself', 'chase your dreams',
+    'you are a work in progress', 'find your rhythm', 'let your intuition guide you',
+    'the power is within you', 'stay positive and persistent', 'you are not alone',
+    'be a force for good', 'find strength in your struggles', 'the future belongs to you',
+    'your potential is a superpower', 'let go of what no longer serves you',
+    'the next chapter awaits', 'your story is still being written', 'stay humble and hungry',
+    'grow through what you go through', 'be the author of your life', 'your greatness is waiting',
+    'find your purpose in the pain', 'your journey is a testament to your strength',
+    'let your passion be your fuel', 'you are a masterpiece in the making',
+    'the best view comes after the hardest climb', 'don\'t just exist, live'
+  ];
     
     const foundPhrases = motivationalPhrases.filter(phrase => text.includes(phrase));
     return foundPhrases.length >= 2; // 2+ generic phrases = likely AI
